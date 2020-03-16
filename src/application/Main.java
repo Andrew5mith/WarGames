@@ -1,15 +1,11 @@
 package application;
 	
 import javafx.application.Application;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Cell;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -19,8 +15,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Ellipse;
@@ -65,7 +59,7 @@ public class Main extends Application {
 			BorderPane gameBorderPane = new BorderPane();
 			gameBorderPane.setCenter(gameGridPane);
 			gameBorderPane.setBottom(lblStatus);	
-			gameScene = new Scene(gameBorderPane, 450, 170);
+			gameScene = new Scene(gameBorderPane, 400, 400);
 			
 			window.getIcons().add(new Image("WarGamesIcon.png"));
 			window.setTitle("War Games");
