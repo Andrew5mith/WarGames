@@ -1,0 +1,20 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+#round-red {
+    -fx-background-color: linear-gradient(#ff5400, #be1d00);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;
+    -fx-min-width: 80;
+    -fx-min-height: 30;
+    }
+    #round-red:hover {
+    -fx-background-color: #383838;
+    -fx-scale-y: 1.1;
+}
+#round-red:pressed {
+    -fx-scale-y: 0.9;
+    -fx-scale-x: 0.9;
+}
+.root {
+   -fx-background-color: firebrick;
+}
