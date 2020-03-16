@@ -24,6 +24,7 @@ public class Main extends Application {
 			pane.setBottom(getButtons());
 			Scene scene = new Scene(pane,400,400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			primaryStage.getIcons().add(new Image("WarGamesIcon.png"));
 			primaryStage.setTitle("War Games");
 			primaryStage.setScene(scene);
 			primaryStage.show();
