@@ -1,17 +1,25 @@
 package application;
 	
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.stage.Stage;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -27,7 +35,12 @@ public class Main extends Application {
 	private Stage window;
 	private Scene titleScene, settingsScene;
 	private ComboBox<String> backgroundDropDown = new ComboBox<>();
-	private TextField displayNameField = new TextField("User");
+	private TextField player1NameField = new TextField("User");
+	private TextField player2NameField = new TextField("User");
+	private ToggleGroup numOfPlayers = new ToggleGroup();
+	private RadioButton zeroPlayers = new RadioButton("0");
+	private RadioButton onePlayers = new RadioButton("1");
+	private RadioButton twoPlayers = new RadioButton("2");
 	private Button saveBtn = new Button("Save");
 	private Button cancelBtn = new Button("Cancel");
 	
@@ -35,6 +48,11 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		try {
 			window = primaryStage;
+			
+			zeroPlayers.setToggleGroup(numOfPlayers);
+			onePlayers.setToggleGroup(numOfPlayers);
+			twoPlayers.setToggleGroup(numOfPlayers);
+			zeroPlayers.setSelected(true);
 			
 			BorderPane titlePane = new BorderPane();
 			titlePane.setCenter(getImage());
@@ -52,6 +70,8 @@ public class Main extends Application {
 			window.setTitle("War Games");
 			window.setScene(titleScene);
 			window.show();
+			
+			zeroPlayers.fireEvent(new ActionEvent());
 		
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -62,10 +82,78 @@ public class Main extends Application {
 		GridPane settingsPane = new GridPane();
 		settingsPane.setHgap(5);
 		settingsPane.setVgap(5);
-		settingsPane.add(new Label("Display Name:"), 0, 0);
-		settingsPane.add(displayNameField, 1, 0);
-		settingsPane.add(new Label("Background:"), 0, 1);
-		settingsPane.add(backgroundDropDown, 1, 1);
+		settingsPane.add(new Label("Players: "), 0, 0);
+		settingsPane.add(zeroPlayers, 1, 0);
+		settingsPane.add(onePlayers, 2, 0);
+		settingsPane.add(twoPlayers, 3, 0);
+		
+		zeroPlayers.setOnAction(e -> {
+			settingsPane.add(new Label("Background:"), 0, 1);
+			settingsPane.add(backgroundDropDown, 1, 1, 4, 1);
+			
+			numOfPlayers.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+				@Override
+				public void changed(ObservableValue<? extends Toggle> arg0, Toggle arg1, Toggle arg2) {
+					if (!zeroPlayers.isSelected()) {
+						removeNodeByColumnRowIndex(0, 1, settingsPane);
+						removeNodeByColumnRowIndex(1, 1, settingsPane);
+					}
+				}
+			});
+		});
+		
+		onePlayers.setOnAction(e -> {
+			numOfPlayers.setUserData(onePlayers);
+			
+			settingsPane.add(new Label("Player 1's Name:"), 0, 1);
+			settingsPane.add(player1NameField, 1, 1, 4, 1);
+			
+			settingsPane.add(new Label("Background:"), 0, 2);
+			settingsPane.add(backgroundDropDown, 1, 2, 4, 1);
+			
+			numOfPlayers.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+				@Override
+				public void changed(ObservableValue<? extends Toggle> arg0, Toggle arg1, Toggle arg2) {
+					if (!onePlayers.isSelected()) {
+						removeNodeByColumnRowIndex(0, 1, settingsPane);
+						removeNodeByColumnRowIndex(1, 1, settingsPane);
+						
+						removeNodeByColumnRowIndex(0, 2, settingsPane);
+						removeNodeByColumnRowIndex(1, 2, settingsPane);
+					}
+				}
+			});
+		});
+		
+		twoPlayers.setOnAction(e -> {
+			numOfPlayers.setUserData(twoPlayers);
+			
+			settingsPane.add(new Label("Player 1's Name:"), 0, 1);
+			settingsPane.add(player1NameField, 1, 1, 4, 1);
+			
+			settingsPane.add(new Label("Player 2's Name:"), 0, 2);
+			settingsPane.add(player2NameField, 1, 2, 4, 1);
+			
+			settingsPane.add(new Label("Background:"), 0, 3);
+			settingsPane.add(backgroundDropDown, 1, 3, 4, 1);
+			
+			numOfPlayers.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+				@Override
+				public void changed(ObservableValue<? extends Toggle> arg0, Toggle arg1, Toggle arg2) {
+					if (!twoPlayers.isSelected()) {
+						removeNodeByColumnRowIndex(0, 1, settingsPane);
+						removeNodeByColumnRowIndex(1, 1, settingsPane);
+						
+						removeNodeByColumnRowIndex(0, 2, settingsPane);
+						removeNodeByColumnRowIndex(1, 2, settingsPane);
+						
+						removeNodeByColumnRowIndex(0, 3, settingsPane);
+						removeNodeByColumnRowIndex(1, 3, settingsPane);
+					}
+				}
+			});
+		});
+		
 		settingsPane.setAlignment(Pos.CENTER);
 		return settingsPane;
 		
@@ -104,6 +192,18 @@ public class Main extends Application {
 		hBox.setAlignment(Pos.CENTER);
 		hBox.getChildren().add(imageView);
 		return hBox;
+	}
+	
+	@SuppressWarnings("static-access")
+	public void removeNodeByColumnRowIndex(final int column, final int row, GridPane gridPane) {
+		ObservableList<Node> children = gridPane.getChildren();
+		
+		for(Node node : children) {
+		    if((node instanceof Label || node instanceof TextField || node instanceof ComboBox) && gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
+		        gridPane.getChildren().remove(node);
+		        break;
+		    }
+		} 
 	}
 	
 	public static void main(String[] args) {
