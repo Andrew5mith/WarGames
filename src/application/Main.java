@@ -1,13 +1,19 @@
 package application;
 	
+import java.util.concurrent.TimeUnit;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -25,6 +31,10 @@ import javafx.scene.layout.HBox;
 
 
 public class Main extends Application {
+	
+	public Object[] settings;
+	
+	private int totalHumans;
 	
 	private Stage window;
 	private Scene titleScene, settingsScene;
@@ -89,6 +99,8 @@ public class Main extends Application {
 		twoPlayers.setId("num-of-players");
 		
 		zeroPlayers.setOnAction(e -> {
+			totalHumans = 0;
+			
 			settingsPane.add(new Label("Background:"), 0, 1);
 			settingsPane.add(backgroundDropDown, 1, 1, 4, 1);
 			
@@ -106,6 +118,8 @@ public class Main extends Application {
 		});
 		
 		onePlayers.setOnAction(e -> {
+			totalHumans = 1;
+			
 			settingsPane.add(new Label("Player 1's Name:"), 0, 1);
 			settingsPane.add(player1NameField, 1, 1, 4, 1);
 			
@@ -130,6 +144,8 @@ public class Main extends Application {
 		});
 		
 		twoPlayers.setOnAction(e -> {
+			totalHumans = 2;
+			
 			settingsPane.add(new Label("Player 1's Name:"), 0, 1);
 			settingsPane.add(player1NameField, 1, 1, 4, 1);
 			
@@ -182,11 +198,41 @@ public class Main extends Application {
 		HBox hBox = new HBox(15);
 		hBox.setPadding(new Insets(15,15,15,15));
 		hBox.setAlignment(Pos.CENTER);
+		
 		Button cancelBtn = new Button("Cancel");
-		Button saveBtn = new Button("Save");
 		cancelBtn.setId("round-red");
-		saveBtn.setId("round-red");
 		cancelBtn.setOnAction(e -> window.setScene(titleScene));
+		
+		Button saveBtn = new Button("Save");
+		saveBtn.setId("round-red");
+		saveBtn.setOnAction(e -> {
+			// TODO Decide whether to send the background as an image or a string
+			//String background;
+			
+			if (totalHumans == 1) {
+				String player1 = player1NameField.getText();
+				settings[0] = totalHumans;
+				settings[1] = player1;
+				//settings[3] = background;
+			} else if (totalHumans == 2) {
+				String player1 = player1NameField.getText();
+				String player2 = player2NameField.getText();
+				settings[0] = totalHumans;
+				settings[1] = player1;
+				settings[2] = player2;
+				//settings[3] = background;
+			}
+			
+			saveBtn.setText("Saved!");
+			
+			Timeline resetSaveBtnText = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+				saveBtn.setText("Save");
+			}));
+			resetSaveBtnText.setDelay(Duration.seconds(2));
+			resetSaveBtnText.setCycleCount(1);
+			resetSaveBtnText.play();
+		});
+		
 		hBox.getChildren().addAll(cancelBtn, saveBtn);
 		return hBox;
 	}
@@ -202,7 +248,7 @@ public class Main extends Application {
 	
 	@SuppressWarnings("static-access")
 	// Gets a node by (column, row) index
-	public Node getNodeByColumnRowIndex(final int column, final int row, GridPane gridPane, String function) {
+	private Node getNodeByColumnRowIndex(final int column, final int row, GridPane gridPane, String function) {
 		ObservableList<Node> children = gridPane.getChildren();
 		
 		for(Node node : children) {
