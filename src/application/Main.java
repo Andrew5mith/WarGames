@@ -5,15 +5,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -25,9 +22,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 
 
 public class Main extends Application {
@@ -82,14 +76,23 @@ public class Main extends Application {
 		GridPane settingsPane = new GridPane();
 		settingsPane.setHgap(5);
 		settingsPane.setVgap(5);
+		
 		settingsPane.add(new Label("Players: "), 0, 0);
 		settingsPane.add(zeroPlayers, 1, 0);
+		getNodeByColumnRowIndex(0, 0, settingsPane).setId("label");
+		zeroPlayers.setId("num-of-players");
+		
 		settingsPane.add(onePlayers, 2, 0);
+		onePlayers.setId("num-of-players");
+		
 		settingsPane.add(twoPlayers, 3, 0);
+		twoPlayers.setId("num-of-players");
 		
 		zeroPlayers.setOnAction(e -> {
 			settingsPane.add(new Label("Background:"), 0, 1);
 			settingsPane.add(backgroundDropDown, 1, 1, 4, 1);
+			
+			getNodeByColumnRowIndex(0, 1, settingsPane).setId("label");
 			
 			numOfPlayers.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 				@Override
@@ -110,6 +113,9 @@ public class Main extends Application {
 			
 			settingsPane.add(new Label("Background:"), 0, 2);
 			settingsPane.add(backgroundDropDown, 1, 2, 4, 1);
+			
+			getNodeByColumnRowIndex(0, 1, settingsPane).setId("label");
+			getNodeByColumnRowIndex(0, 2, settingsPane).setId("label");
 			
 			numOfPlayers.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 				@Override
@@ -136,6 +142,10 @@ public class Main extends Application {
 			
 			settingsPane.add(new Label("Background:"), 0, 3);
 			settingsPane.add(backgroundDropDown, 1, 3, 4, 1);
+			
+			getNodeByColumnRowIndex(0, 1, settingsPane).setId("label");
+			getNodeByColumnRowIndex(0, 2, settingsPane).setId("label");
+			getNodeByColumnRowIndex(0, 3, settingsPane).setId("label");
 			
 			numOfPlayers.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 				@Override
@@ -195,6 +205,7 @@ public class Main extends Application {
 	}
 	
 	@SuppressWarnings("static-access")
+	// Removes a node by (column, row) index
 	public void removeNodeByColumnRowIndex(final int column, final int row, GridPane gridPane) {
 		ObservableList<Node> children = gridPane.getChildren();
 		
@@ -204,6 +215,19 @@ public class Main extends Application {
 		        break;
 		    }
 		} 
+	}
+	
+	@SuppressWarnings("static-access")
+	// Gets a node by (column, row) index
+	public Node getNodeByColumnRowIndex(final int column, final int row, GridPane gridPane) {
+		ObservableList<Node> children = gridPane.getChildren();
+		
+		for(Node node : children) {
+		    if((node instanceof Label || node instanceof TextField || node instanceof ComboBox) && gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
+		        return node;
+		    }
+		} 
+		return null;
 	}
 	
 	public static void main(String[] args) {
