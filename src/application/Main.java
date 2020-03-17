@@ -79,7 +79,7 @@ public class Main extends Application {
 		
 		settingsPane.add(new Label("Players: "), 0, 0);
 		settingsPane.add(zeroPlayers, 1, 0);
-		getNodeByColumnRowIndex(0, 0, settingsPane).setId("label");
+		getNodeByColumnRowIndex(0, 0, settingsPane, "").setId("label");
 		zeroPlayers.setId("num-of-players");
 		
 		settingsPane.add(onePlayers, 2, 0);
@@ -92,48 +92,44 @@ public class Main extends Application {
 			settingsPane.add(new Label("Background:"), 0, 1);
 			settingsPane.add(backgroundDropDown, 1, 1, 4, 1);
 			
-			getNodeByColumnRowIndex(0, 1, settingsPane).setId("label");
+			getNodeByColumnRowIndex(0, 1, settingsPane, "").setId("label");
 			
 			numOfPlayers.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 				@Override
 				public void changed(ObservableValue<? extends Toggle> arg0, Toggle arg1, Toggle arg2) {
 					if (!zeroPlayers.isSelected()) {
-						removeNodeByColumnRowIndex(0, 1, settingsPane);
-						removeNodeByColumnRowIndex(1, 1, settingsPane);
+						getNodeByColumnRowIndex(0, 1, settingsPane, "remove");
+						getNodeByColumnRowIndex(1, 1, settingsPane, "remove");
 					}
 				}
 			});
 		});
 		
 		onePlayers.setOnAction(e -> {
-			numOfPlayers.setUserData(onePlayers);
-			
 			settingsPane.add(new Label("Player 1's Name:"), 0, 1);
 			settingsPane.add(player1NameField, 1, 1, 4, 1);
 			
 			settingsPane.add(new Label("Background:"), 0, 2);
 			settingsPane.add(backgroundDropDown, 1, 2, 4, 1);
 			
-			getNodeByColumnRowIndex(0, 1, settingsPane).setId("label");
-			getNodeByColumnRowIndex(0, 2, settingsPane).setId("label");
+			getNodeByColumnRowIndex(0, 1, settingsPane, "").setId("label");
+			getNodeByColumnRowIndex(0, 2, settingsPane, "").setId("label");
 			
 			numOfPlayers.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 				@Override
 				public void changed(ObservableValue<? extends Toggle> arg0, Toggle arg1, Toggle arg2) {
 					if (!onePlayers.isSelected()) {
-						removeNodeByColumnRowIndex(0, 1, settingsPane);
-						removeNodeByColumnRowIndex(1, 1, settingsPane);
+						getNodeByColumnRowIndex(0, 1, settingsPane, "remove");
+						getNodeByColumnRowIndex(1, 1, settingsPane, "remove");
 						
-						removeNodeByColumnRowIndex(0, 2, settingsPane);
-						removeNodeByColumnRowIndex(1, 2, settingsPane);
+						getNodeByColumnRowIndex(0, 2, settingsPane, "remove");
+						getNodeByColumnRowIndex(1, 2, settingsPane, "remove");
 					}
 				}
 			});
 		});
 		
 		twoPlayers.setOnAction(e -> {
-			numOfPlayers.setUserData(twoPlayers);
-			
 			settingsPane.add(new Label("Player 1's Name:"), 0, 1);
 			settingsPane.add(player1NameField, 1, 1, 4, 1);
 			
@@ -143,22 +139,22 @@ public class Main extends Application {
 			settingsPane.add(new Label("Background:"), 0, 3);
 			settingsPane.add(backgroundDropDown, 1, 3, 4, 1);
 			
-			getNodeByColumnRowIndex(0, 1, settingsPane).setId("label");
-			getNodeByColumnRowIndex(0, 2, settingsPane).setId("label");
-			getNodeByColumnRowIndex(0, 3, settingsPane).setId("label");
+			getNodeByColumnRowIndex(0, 1, settingsPane, "").setId("label");
+			getNodeByColumnRowIndex(0, 2, settingsPane, "").setId("label");
+			getNodeByColumnRowIndex(0, 3, settingsPane, "").setId("label");
 			
 			numOfPlayers.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 				@Override
 				public void changed(ObservableValue<? extends Toggle> arg0, Toggle arg1, Toggle arg2) {
 					if (!twoPlayers.isSelected()) {
-						removeNodeByColumnRowIndex(0, 1, settingsPane);
-						removeNodeByColumnRowIndex(1, 1, settingsPane);
+						getNodeByColumnRowIndex(0, 1, settingsPane, "remove");
+						getNodeByColumnRowIndex(1, 1, settingsPane, "remove");
 						
-						removeNodeByColumnRowIndex(0, 2, settingsPane);
-						removeNodeByColumnRowIndex(1, 2, settingsPane);
+						getNodeByColumnRowIndex(0, 2, settingsPane, "remove");
+						getNodeByColumnRowIndex(1, 2, settingsPane, "remove");
 						
-						removeNodeByColumnRowIndex(0, 3, settingsPane);
-						removeNodeByColumnRowIndex(1, 3, settingsPane);
+						getNodeByColumnRowIndex(0, 3, settingsPane, "remove");
+						getNodeByColumnRowIndex(1, 3, settingsPane, "remove");
 					}
 				}
 			});
@@ -205,26 +201,19 @@ public class Main extends Application {
 	}
 	
 	@SuppressWarnings("static-access")
-	// Removes a node by (column, row) index
-	public void removeNodeByColumnRowIndex(final int column, final int row, GridPane gridPane) {
-		ObservableList<Node> children = gridPane.getChildren();
-		
-		for(Node node : children) {
-		    if((node instanceof Label || node instanceof TextField || node instanceof ComboBox) && gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
-		        gridPane.getChildren().remove(node);
-		        break;
-		    }
-		} 
-	}
-	
-	@SuppressWarnings("static-access")
 	// Gets a node by (column, row) index
-	public Node getNodeByColumnRowIndex(final int column, final int row, GridPane gridPane) {
+	public Node getNodeByColumnRowIndex(final int column, final int row, GridPane gridPane, String function) {
 		ObservableList<Node> children = gridPane.getChildren();
 		
 		for(Node node : children) {
 		    if((node instanceof Label || node instanceof TextField || node instanceof ComboBox) && gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
-		        return node;
+		        switch (function) {
+		        	case "remove":
+				        gridPane.getChildren().remove(node);
+				        return null;   
+		        	case "":
+		        		return node;
+		        }
 		    }
 		} 
 		return null;
