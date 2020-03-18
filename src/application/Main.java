@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,7 +17,9 @@ import javafx.util.Duration;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -27,7 +30,10 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -35,11 +41,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Ellipse;
-
-	
-
-	
-
 
 
 
@@ -57,20 +58,21 @@ public class Main extends Application {
 	private RadioButton zeroPlayers = new RadioButton("0");
 	private RadioButton onePlayers = new RadioButton("1");
 	private RadioButton twoPlayers = new RadioButton("2");
-	private Button saveBtn = new Button("Save");
+	private Button saveBtn;
 	private Button cancelBtn = new Button("Cancel");
 	private char whoseTurn = 'X';
 	// Create and initialize cell
 	private Cell[][] cell =  new Cell[3][3];
 	// Create and initialize a status label
 	 private Label lblStatus;
+	private String[] colors = {"Red", "blue", "green", "white", "purple", "orange"};
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		try {
+			
 			window = primaryStage;
 			
-
 			zeroPlayers.setToggleGroup(numOfPlayers);
 			onePlayers.setToggleGroup(numOfPlayers);
 			twoPlayers.setToggleGroup(numOfPlayers);
@@ -116,7 +118,6 @@ public class Main extends Application {
 		}
 	}
 	
-	
 	private VBox getGameOverScreen() {
 		VBox vBox = new VBox(15);
 		vBox.setPadding(new Insets(15,15,15,15));
@@ -126,7 +127,6 @@ public class Main extends Application {
 		vBox.getChildren().addAll(getLblStatus(), playAgainBtn);
 		return vBox;
 	}
-	
 	
 	private Node getLblStatus() {
 		HBox hBox = new HBox(15);
@@ -154,24 +154,40 @@ public class Main extends Application {
 		GridPane settingsPane = new GridPane();
 		settingsPane.setHgap(5);
 		settingsPane.setVgap(5);
-		
 		settingsPane.add(new Label("Players: "), 0, 0);
 		settingsPane.add(zeroPlayers, 1, 0);
 		getNodeByColumnRowIndex(0, 0, settingsPane, "").setId("label");
 		zeroPlayers.setId("num-of-players");
-		
 		settingsPane.add(onePlayers, 2, 0);
-		onePlayers.setId("num-of-players");
-		
+		onePlayers.setId("num-of-players");	
 		settingsPane.add(twoPlayers, 3, 0);
 		twoPlayers.setId("num-of-players");
 		
 		zeroPlayers.setOnAction(e -> {
-			totalHumans = 0;
+			
+			totalHumans = 0;	
+			
+			
+			backgroundDropDown = new ComboBox<>();		
+			backgroundDropDown.setValue("Red");
+			
+			ObservableList<String> items = FXCollections.observableArrayList(colors);
+			backgroundDropDown.getItems().addAll(items); // Add items to combo box
+			
+			//backgroundDropDown.setOnAction(e -> setBackgroundColor(items.indexOf(backgroundDropDown.getValue())));
+			
+			EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					
+			
+
+				}
+			};
+			
+			backgroundDropDown.setOnAction(event);
 			
 			settingsPane.add(new Label("Background:"), 0, 1);
-			settingsPane.add(backgroundDropDown, 1, 1, 4, 1);
-			
+			settingsPane.add(backgroundDropDown, 1, 1, 4, 1);		
 			getNodeByColumnRowIndex(0, 1, settingsPane, "").setId("label");
 			
 			numOfPlayers.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
@@ -196,6 +212,7 @@ public class Main extends Application {
 			
 			getNodeByColumnRowIndex(0, 1, settingsPane, "").setId("label");
 			getNodeByColumnRowIndex(0, 2, settingsPane, "").setId("label");
+			
 			
 			numOfPlayers.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 				@Override
@@ -249,6 +266,7 @@ public class Main extends Application {
 		
 	}
 	
+
 	private HBox getTitleButtons() {
 		HBox hBox = new HBox(15);
 		hBox.setPadding(new Insets(15,15,15,15));
@@ -272,7 +290,7 @@ public class Main extends Application {
 		cancelBtn.setId("round-red");
 		cancelBtn.setOnAction(e -> window.setScene(titleScene));
 		
-		Button saveBtn = new Button("Save");
+		saveBtn = new Button("Save");
 		saveBtn.setId("round-red");
 		saveBtn.setOnAction(e -> {
 			// TODO Decide whether to send the background as an image or a string
@@ -305,7 +323,6 @@ public class Main extends Application {
 		hBox.getChildren().addAll(cancelBtn, saveBtn);
 		return hBox;
 	}
-	
 	
 	private HBox getImage() {
 		HBox hBox = new HBox(25);
