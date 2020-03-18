@@ -174,17 +174,6 @@ public class Main extends Application {
 			ObservableList<String> items = FXCollections.observableArrayList(colors);
 			backgroundDropDown.getItems().addAll(items); // Add items to combo box
 			
-			//backgroundDropDown.setOnAction(e -> setBackgroundColor(items.indexOf(backgroundDropDown.getValue())));
-			
-			EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
-				public void handle(ActionEvent e) {
-					
-			
-
-				}
-			};
-			
-			backgroundDropDown.setOnAction(event);
 			
 			settingsPane.add(new Label("Background:"), 0, 1);
 			settingsPane.add(backgroundDropDown, 1, 1, 4, 1);		
