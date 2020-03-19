@@ -21,3 +21,11 @@
 .root {
    -fx-background-color: firebrick;
 }
+
+.red-background {
+    -fx-background-color: firebrick;
+}
+
+.blue-background {
+    -fx-background-color: blue;
+}

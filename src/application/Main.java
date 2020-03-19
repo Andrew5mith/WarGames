@@ -13,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -49,7 +50,7 @@ public class Main extends Application {
 	public Object[] settings;
 	private int totalHumans;
 	private Stage window;
-	private BorderPane gameBorderPane;
+	private BorderPane gameBorderPane, titlePane, settingsPane, gameOverPane;
 	private Scene titleScene, settingsScene, gameScene, gameOverScene;
 	private ComboBox<String> backgroundDropDown = new ComboBox<>();
 	private TextField player1NameField = new TextField("User");
@@ -65,13 +66,16 @@ public class Main extends Application {
 	private Cell[][] cell =  new Cell[3][3];
 	// Create and initialize a status label
 	 private Label lblStatus;
-	private String[] colors = {"Red", "blue", "green", "white", "purple", "orange"};
+	private String[] colors = {"Red", "Blue", "Green", "White", "Purple", "Orange"};
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		try {
 			
+			
 			window = primaryStage;
+			  String style = "-fx-background-color: green;";
+	
 			
 			zeroPlayers.setToggleGroup(numOfPlayers);
 			onePlayers.setToggleGroup(numOfPlayers);
@@ -79,14 +83,16 @@ public class Main extends Application {
 			zeroPlayers.setSelected(true);
 			
 			//Title
-			BorderPane titlePane = new BorderPane();
+			titlePane = new BorderPane();
+			//  titlePane.setStyle(style);
+
 			titlePane.setCenter(getImage());
 			titlePane.setBottom(getTitleButtons());
 			titleScene = new Scene(titlePane,400,400);
 			titleScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
 			//Settings
-			BorderPane settingsPane = new BorderPane();
+			settingsPane = new BorderPane();
 			settingsPane.setCenter(getSettings());
 			settingsPane.setBottom(getSettingsButtons());
 			settingsScene = new Scene(settingsPane, 400, 400);
@@ -101,7 +107,7 @@ public class Main extends Application {
 			gameScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
 			//GameOver
-			BorderPane gameOverPane = new BorderPane();
+			gameOverPane = new BorderPane();
 			gameOverPane.setCenter(getGameOverScreen());
 			gameOverScene = new Scene(gameOverPane, 400, 400);
 			gameOverScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -270,6 +276,8 @@ public class Main extends Application {
 		return hBox;
 	}
 	
+
+	
 	private HBox getSettingsButtons() {
 		HBox hBox = new HBox(15);
 		hBox.setPadding(new Insets(15,15,15,15));
@@ -284,20 +292,72 @@ public class Main extends Application {
 		saveBtn.setOnAction(e -> {
 			// TODO Decide whether to send the background as an image or a string
 			//String background;
+			String background = backgroundDropDown.getValue();
+			String player1 = player1NameField.getText();
+			String player2 = player2NameField.getText();
+			String redBg = "-fx-background-color: red;";
+			String blueBg = "-fx-background-color: blue;";
+			String greenBg = "-fx-background-color: green;";
+			String whiteBg = "-fx-background-color: white;";
+			String purpleBg = "-fx-background-color: purple;";
+			String orangeBg = "-fx-background-color: orange;";
 			
 			if (totalHumans == 1) {
-				String player1 = player1NameField.getText();
 				settings[0] = totalHumans;
 				settings[1] = player1;
-				//settings[3] = background;
+				settings[3] = background;
+				
 			} else if (totalHumans == 2) {
-				String player1 = player1NameField.getText();
-				String player2 = player2NameField.getText();
 				settings[0] = totalHumans;
 				settings[1] = player1;
 				settings[2] = player2;
-				//settings[3] = background;
+				settings[3] = background;
 			}
+			
+			
+			if(background == "Red") {
+				titlePane.setStyle(redBg);
+				gameBorderPane.setStyle(redBg);
+				settingsPane.setStyle(redBg);
+				gameOverPane.setStyle(redBg);
+				
+			}
+			if(background == "Blue") {
+				titlePane.setStyle(blueBg);
+				gameBorderPane.setStyle(blueBg);
+				settingsPane.setStyle(blueBg);
+				gameOverPane.setStyle(blueBg);
+				
+			}
+			if(background == "Green") {
+				titlePane.setStyle(greenBg);
+				gameBorderPane.setStyle(greenBg);
+				settingsPane.setStyle(greenBg);
+				gameOverPane.setStyle(greenBg);
+				
+			}
+			if(background == "White") {
+				titlePane.setStyle(whiteBg);
+				gameBorderPane.setStyle(whiteBg);
+				settingsPane.setStyle(whiteBg);
+				gameOverPane.setStyle(whiteBg);
+				
+			}
+			if(background == "Purple") {
+				titlePane.setStyle(purpleBg);
+				gameBorderPane.setStyle(purpleBg);
+				settingsPane.setStyle(purpleBg);
+				gameOverPane.setStyle(purpleBg);
+				
+			}
+			if(background == "Orange") {
+				titlePane.setStyle(orangeBg);
+				gameBorderPane.setStyle(orangeBg);
+				settingsPane.setStyle(orangeBg);
+				gameOverPane.setStyle(orangeBg);
+				
+			}
+
 			
 			saveBtn.setText("Saved!");
 			
