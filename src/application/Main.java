@@ -1,5 +1,6 @@
 package application;
 	
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -440,6 +441,22 @@ public class Main extends Application {
 	      return false;
 	    }
 	  
+	    // call this method only when some cells are left.
+	    public Cell findEmptyCell() {
+	        int index;
+	        Random r = new Random();
+
+	        while (true) {
+	            index = r.nextInt(9);
+	            int row = index % 3;
+	            int col = index / 3;
+
+	            if(cell[row][col].getToken() == ' ') {
+	                return cell[row][col];
+	            }
+	        }
+	    }
+	  
 	// An inner class for a cell
 	  public class Cell extends Pane {
 	    // Token used for this cell
@@ -495,6 +512,7 @@ public class Main extends Application {
 	    /* Handle a mouse click event */
 	    private void handleMouseClick() {
 	      // If cell is empty and game is not over
+	    	
 	      if (token == ' ' && whoseTurn != ' ') {
 	        setToken(whoseTurn); // Set token in the cell
 
@@ -510,13 +528,38 @@ public class Main extends Application {
 	          
 	        }
 	        else {
-	          // Change the turn
-	          whoseTurn = (whoseTurn == 'X') ? 'O' : 'X';
-	          // Display whose turn
-	          lblStatus.setText(whoseTurn + "'s turn");
-	        }
+	        	if(totalHumans == 2) {
+	        		// Change the turn
+	        		whoseTurn = (whoseTurn == 'X') ? 'O' : 'X';
+	        		// Display whose turn
+	        		lblStatus.setText(whoseTurn + "'s turn");
+	        	}
+	        	if(totalHumans == 1) {
+	        		whoseTurn = (whoseTurn == 'X') ? 'O' : 'X';
+
+                    // Make move if it is computer's turn
+                    if(whoseTurn == 'O') {
+                        Cell compCell = findEmptyCell();
+                        compCell.handleMouseClick();
+                   }
+	        	}
+	        	if(totalHumans == 0) {
+                    // Change the turn
+                    whoseTurn = (whoseTurn == 'X') ? 'O' : 'X';
+
+                    // Make move if it is computer's turn
+                    if(whoseTurn == 'O') {
+                        Cell compCell = findEmptyCell();
+                        compCell.handleMouseClick();
+                    }
+                    if(whoseTurn == 'X') {
+                        Cell compCell = findEmptyCell();
+                        compCell.handleMouseClick();
+                    }
+	        	}
 	      }
 	    }
+	  }
 	  }
 	    
 	
