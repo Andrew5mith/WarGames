@@ -34,7 +34,6 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Ellipse;
 
 
-
 public class Main extends Application {
 	
 	public Object[] settings;
@@ -62,7 +61,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		try {
-					
+		
+			
 			window = primaryStage;
 
 			zeroPlayers.setToggleGroup(numOfPlayers);
@@ -117,11 +117,18 @@ public class Main extends Application {
 		vBox.setPadding(new Insets(15,15,15,15));
 		vBox.setAlignment(Pos.CENTER);
 		Button playAgainBtn = new Button("Play Again");
-		playAgainBtn.setOnAction(e -> window.setScene(gameScene));
+		playAgainBtn.setOnAction((ActionEvent event) -> {
+			
+	
+		});
 		vBox.getChildren().addAll(getLblStatus(), playAgainBtn);
 		return vBox;
 	}
 	
+
+
+
+
 	private Node getLblStatus() {
 		HBox hBox = new HBox(15);
 		hBox.setPadding(new Insets(15,15,15,15));
@@ -272,7 +279,7 @@ public class Main extends Application {
 			player2 = player2NameField.getText();
 			String background = backgroundDropDown.getValue();
 
-			String redBg = "-fx-background-color: red;";
+			String redBg = "-fx-background-color: firebrick;";
 			String blueBg = "-fx-background-color: blue;";
 			String greenBg = "-fx-background-color: green;";
 			String whiteBg = "-fx-background-color: white;";

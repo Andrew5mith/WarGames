@@ -16,7 +16,7 @@
     -fx-scale-x: 0.9;
 }
 #num-of-players, #label {
-	-fx-text-fill: white;
+	-fx-text-fill: black;
 }
 .root {
    -fx-background-color: firebrick;
