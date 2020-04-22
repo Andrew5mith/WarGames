@@ -1,7 +1,6 @@
 package application;
 	
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -10,18 +9,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.stage.Stage;
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -32,10 +24,7 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -47,21 +36,22 @@ import javafx.scene.shape.Ellipse;
 
 
 public class Main extends Application {
-	//branch test
+	
 	public Object[] settings;
 	private int totalHumans;
 	private Stage window;
 	private BorderPane gameBorderPane, titlePane, settingsPane, gameOverPane;
 	private Scene titleScene, settingsScene, gameScene, gameOverScene;
 	private ComboBox<String> backgroundDropDown = new ComboBox<>();
-	private TextField player1NameField = new TextField("User");
-	private TextField player2NameField = new TextField("User");
+	private TextField player1NameField = new TextField("Player 1");
+	private TextField player2NameField = new TextField("Player 2");
 	private ToggleGroup numOfPlayers = new ToggleGroup();
 	private RadioButton zeroPlayers = new RadioButton("0");
 	private RadioButton onePlayers = new RadioButton("1");
 	private RadioButton twoPlayers = new RadioButton("2");
 	private Button saveBtn;
-	private Button cancelBtn = new Button("Cancel");
+	private String player1;
+	private String player2;
 	private char whoseTurn = 'X';
 	// Create and initialize cell
 	private Cell[][] cell =  new Cell[3][3];
@@ -72,16 +62,13 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		try {
-			
-			
+					
 			window = primaryStage;
-			  String style = "-fx-background-color: green;";
-	
-			
+
 			zeroPlayers.setToggleGroup(numOfPlayers);
 			onePlayers.setToggleGroup(numOfPlayers);
 			twoPlayers.setToggleGroup(numOfPlayers);
-			zeroPlayers.setSelected(true);
+			onePlayers.setSelected(true);
 			
 			//Title
 			titlePane = new BorderPane();
@@ -118,7 +105,7 @@ public class Main extends Application {
 			window.setScene(titleScene);
 			window.show();
 			
-			zeroPlayers.fireEvent(new ActionEvent());
+			onePlayers.fireEvent(new ActionEvent()); //start the game against computer
 		
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -170,18 +157,14 @@ public class Main extends Application {
 		settingsPane.add(twoPlayers, 3, 0);
 		twoPlayers.setId("num-of-players");
 		
+		backgroundDropDown = new ComboBox<>();		
+		backgroundDropDown.setValue("Red");
+		ObservableList<String> items = FXCollections.observableArrayList(colors);
+		backgroundDropDown.getItems().addAll(items); // Add items to combo box
+		
 		zeroPlayers.setOnAction(e -> {
-			
+		
 			totalHumans = 0;	
-			
-			
-			backgroundDropDown = new ComboBox<>();		
-			backgroundDropDown.setValue("Red");
-			
-			ObservableList<String> items = FXCollections.observableArrayList(colors);
-			backgroundDropDown.getItems().addAll(items); // Add items to combo box
-			
-			
 			settingsPane.add(new Label("Background:"), 0, 1);
 			settingsPane.add(backgroundDropDown, 1, 1, 4, 1);		
 			getNodeByColumnRowIndex(0, 1, settingsPane, "").setId("label");
@@ -201,15 +184,12 @@ public class Main extends Application {
 			totalHumans = 1;
 			
 			settingsPane.add(new Label("Player 1's Name:"), 0, 1);
-			settingsPane.add(player1NameField, 1, 1, 4, 1);
-			
+			settingsPane.add(player1NameField, 1, 1, 4, 1);	
 			settingsPane.add(new Label("Background:"), 0, 2);
-			settingsPane.add(backgroundDropDown, 1, 2, 4, 1);
-			
+			settingsPane.add(backgroundDropDown, 1, 2, 4, 1);		
 			getNodeByColumnRowIndex(0, 1, settingsPane, "").setId("label");
 			getNodeByColumnRowIndex(0, 2, settingsPane, "").setId("label");
-			
-			
+				
 			numOfPlayers.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 				@Override
 				public void changed(ObservableValue<? extends Toggle> arg0, Toggle arg1, Toggle arg2) {
@@ -228,14 +208,11 @@ public class Main extends Application {
 			totalHumans = 2;
 			
 			settingsPane.add(new Label("Player 1's Name:"), 0, 1);
-			settingsPane.add(player1NameField, 1, 1, 4, 1);
-			
+			settingsPane.add(player1NameField, 1, 1, 4, 1);	
 			settingsPane.add(new Label("Player 2's Name:"), 0, 2);
-			settingsPane.add(player2NameField, 1, 2, 4, 1);
-			
+			settingsPane.add(player2NameField, 1, 2, 4, 1);	
 			settingsPane.add(new Label("Background:"), 0, 3);
-			settingsPane.add(backgroundDropDown, 1, 3, 4, 1);
-			
+			settingsPane.add(backgroundDropDown, 1, 3, 4, 1);	
 			getNodeByColumnRowIndex(0, 1, settingsPane, "").setId("label");
 			getNodeByColumnRowIndex(0, 2, settingsPane, "").setId("label");
 			getNodeByColumnRowIndex(0, 3, settingsPane, "").setId("label");
@@ -245,11 +222,9 @@ public class Main extends Application {
 				public void changed(ObservableValue<? extends Toggle> arg0, Toggle arg1, Toggle arg2) {
 					if (!twoPlayers.isSelected()) {
 						getNodeByColumnRowIndex(0, 1, settingsPane, "remove");
-						getNodeByColumnRowIndex(1, 1, settingsPane, "remove");
-						
+						getNodeByColumnRowIndex(1, 1, settingsPane, "remove");					
 						getNodeByColumnRowIndex(0, 2, settingsPane, "remove");
-						getNodeByColumnRowIndex(1, 2, settingsPane, "remove");
-						
+						getNodeByColumnRowIndex(1, 2, settingsPane, "remove");						
 						getNodeByColumnRowIndex(0, 3, settingsPane, "remove");
 						getNodeByColumnRowIndex(1, 3, settingsPane, "remove");
 					}
@@ -284,36 +259,25 @@ public class Main extends Application {
 		hBox.setPadding(new Insets(15,15,15,15));
 		hBox.setAlignment(Pos.CENTER);
 		
-		Button cancelBtn = new Button("Cancel");
-		cancelBtn.setId("round-red");
-		cancelBtn.setOnAction(e -> window.setScene(titleScene));
+		Button backBtn = new Button("Back");
+		backBtn.setId("round-red");
+		backBtn.setOnAction(e -> window.setScene(titleScene));
 		
 		saveBtn = new Button("Save");
 		saveBtn.setId("round-red");
 		saveBtn.setOnAction(e -> {
 			// TODO Decide whether to send the background as an image or a string
 			//String background;
+			player1 = player1NameField.getText();
+			player2 = player2NameField.getText();
 			String background = backgroundDropDown.getValue();
-			String player1 = player1NameField.getText();
-			String player2 = player2NameField.getText();
+
 			String redBg = "-fx-background-color: red;";
 			String blueBg = "-fx-background-color: blue;";
 			String greenBg = "-fx-background-color: green;";
 			String whiteBg = "-fx-background-color: white;";
 			String purpleBg = "-fx-background-color: purple;";
 			String orangeBg = "-fx-background-color: orange;";
-			
-			if (totalHumans == 1) {
-				settings[0] = totalHumans;
-				settings[1] = player1;
-				settings[3] = background;
-				
-			} else if (totalHumans == 2) {
-				settings[0] = totalHumans;
-				settings[1] = player1;
-				settings[2] = player2;
-				settings[3] = background;
-			}
 			
 			
 			if(background == "Red") {
@@ -370,7 +334,7 @@ public class Main extends Application {
 			resetSaveBtnText.play();
 		});
 		
-		hBox.getChildren().addAll(cancelBtn, saveBtn);
+		hBox.getChildren().addAll(backBtn, saveBtn);
 		return hBox;
 	}
 	
@@ -518,9 +482,32 @@ public class Main extends Application {
 
 	        // Check game status
 	        if (isWon(whoseTurn)) {
-	          lblStatus.setText(whoseTurn + " won! The game is over");
-	          whoseTurn = ' '; // Game is over
-	          window.setScene(gameOverScene);
+	        	
+	        	if(totalHumans == 1) {
+	        		if(whoseTurn == 'X') {
+	        			lblStatus.setText(player1 + " won!");
+	        		}
+	        		else {
+	        			lblStatus.setText("Computer won! ");
+	        		}
+	        		// lblStatus.setText(whoseTurn + " won! The game is over");
+	        		
+	        	}
+	        	if (totalHumans == 2) {
+	        		if(whoseTurn == 'X') {
+	        			lblStatus.setText(player1 + " won!");
+	        		}
+	        		else {
+	        			lblStatus.setText(player2 + " won!");
+	        		}
+	        	}
+	        	
+	        	if(totalHumans == 0) {
+	        		lblStatus.setText(whoseTurn + " won! The game is over");
+	        	}
+	        	
+	        	whoseTurn = ' '; // Game is over
+        		window.setScene(gameOverScene);
 	        }
 	        else if (isFull()) {
 	          lblStatus.setText("Draw! The game is over");
