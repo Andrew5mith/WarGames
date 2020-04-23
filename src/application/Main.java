@@ -30,9 +30,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Ellipse;
 
 
 public class Main extends Application {
@@ -315,8 +312,8 @@ public class Main extends Application {
 		return hBox;
 	}
 	
-	private HBox getAvatars() {
-		
+	//return avatars
+	private HBox getAvatars() {	
 		avatarPane.setAlignment(Pos.TOP_CENTER);
 		avatarPane.setSpacing(5);
 		avatarPane.getChildren().addAll(stackPane1, stackPane2);
@@ -324,7 +321,7 @@ public class Main extends Application {
 	}
 	
 
-	
+	//return settings 
 	private HBox getSettingsButtons() {
 		HBox hBox = new HBox(15);
 		hBox.setPadding(new Insets(15,15,15,15));
@@ -337,7 +334,7 @@ public class Main extends Application {
 		saveBtn = new Button("Save");
 		saveBtn.setId("round-red");
 		saveBtn.setOnAction(e -> {
-			// TODO Decide whether to send the background as an image or a string
+			
 			//String background;
 			player1 = player1NameField.getText();
 			player2 = player2NameField.getText();
@@ -380,7 +377,7 @@ public class Main extends Application {
 			String purpleBg = "-fx-background-color: purple;";
 			String orangeBg = "-fx-background-color: orange;";
 			
-			
+			//change the background when saved
 			if(background == "Red") {
 				titlePane.setStyle(redBg);
 				gameBorderPane.setStyle(redBg);
@@ -423,10 +420,10 @@ public class Main extends Application {
 				gameOverPane.setStyle(orangeBg);
 				
 			}
-
 			
+			
+			//create an animation when the saved button is clicked
 			saveBtn.setText("Saved!");
-			
 			Timeline resetSaveBtnText = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
 				saveBtn.setText("Save");
 			}));
@@ -439,6 +436,7 @@ public class Main extends Application {
 		return hBox;
 	}
 	
+	//return title image
 	private HBox getImage() {
 		HBox hBox = new HBox(25);
 		ImageView imageView = new ImageView(new Image("WarGamesTitle.png"));
@@ -466,7 +464,7 @@ public class Main extends Application {
 		return null;
 	}
 	
-	  /** Determine if the cell are all occupied */
+	  // Determine if the cell are all occupied 
 	  public boolean isFull() {
 	    for (int i = 0; i < 3; i++)
 	      for (int j = 0; j < 3; j++)
@@ -476,7 +474,7 @@ public class Main extends Application {
 	    return true;
 	  }
 	  
-	  /** Determine if the player with the specified token wins */
+	  // Determine if the player with the specified token wins 
 	  public boolean isWon(char token) {
 	    for (int i = 0; i < 3; i++)
 	      if (cell[i][0].getToken() == token
@@ -506,7 +504,7 @@ public class Main extends Application {
 	      return false;
 	    }
 	  
-	    // call this method only when some cells are left.
+	    //find empty cell - call this method only when some cells are left.
 	    public Cell findEmptyCell() {
 	        int index;
 	        Random r = new Random();
@@ -533,39 +531,28 @@ public class Main extends Application {
 	      this.setOnMouseClicked(e -> handleMouseClick());
 	    }
 
-	    /** Return token */
+	    // Return token 
 	    public char getToken() {
 	      return token;
 	    }
 	    
-	    /** Set a new token */
+	    //Set new token
 	    public void setToken(char c) {
 	      token = c;
 	      
 	      if (token == 'X') {
-	        Line line1 = new Line(10, 10, 
-	          this.getWidth() - 10, this.getHeight() - 10);
-	        line1.endXProperty().bind(this.widthProperty().subtract(10));
-	        line1.endYProperty().bind(this.heightProperty().subtract(10));
-	        Line line2 = new Line(10, this.getHeight() - 10, 
-	          this.getWidth() - 10, 10);
-	        line2.startYProperty().bind(
-	          this.heightProperty().subtract(10));
-	        line2.endXProperty().bind(this.widthProperty().subtract(10));
-	        
-	        
+	        //use dog image for X
 	        ImageView dog = new ImageView(new Image("dog.png"));
-	        // Add the lines to the pane
 	        this.getChildren().addAll(dog); 
 	      }
+	      //use cat image for O
 	      else if (token == 'O') {
-	    
 	        ImageView cat = new ImageView(new Image("cat.png"));
 	        this.getChildren().addAll(cat);
 	         
 	      }
 	    }
-	    /* Handle a mouse click event */
+	    // Handle a mouse click event 
 	    private void handleMouseClick() {
 	      // If cell is empty and game is not over
 	    	
@@ -575,6 +562,7 @@ public class Main extends Application {
 	        // Check game status
 	        if (isWon(whoseTurn)) {
 	        	
+	        	//display who won
 	        	if(totalHumans == 1) {
 	        		if(whoseTurn == 'X') {
 	        			lblStatus.setText(player1 + " won!");
@@ -601,18 +589,21 @@ public class Main extends Application {
 	        	whoseTurn = ' '; // Game is over
         		window.setScene(gameOverScene);
 	        }
+	        //if gameboard is full and no one one display draw text
 	        else if (isFull()) {
 	          lblStatus.setText("Draw! The game is over");
 	          whoseTurn = ' '; // Game is over
 	          
 	        }
 	        else {
+	        	//PvP
 	        	if(totalHumans == 2) {
 	        		// Change the turn
 	        		whoseTurn = (whoseTurn == 'X') ? 'O' : 'X';
 	        		// Display whose turn
 	        		lblStatus.setText(whoseTurn + "'s turn");
 	        	}
+	        	//Player vs. CPU
 	        	if(totalHumans == 1) {
 	        		whoseTurn = (whoseTurn == 'X') ? 'O' : 'X';
 
@@ -622,6 +613,7 @@ public class Main extends Application {
                         compCell.handleMouseClick();
                    }
 	        	}
+	        	//CPU vs CPU
 	        	if(totalHumans == 0) {
                     // Change the turn
                     whoseTurn = (whoseTurn == 'X') ? 'O' : 'X';
