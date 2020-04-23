@@ -606,6 +606,7 @@ public class Main extends Application {
 	        }
 	        //if gameboard is full and no one one display draw text
 	        else if (isFull()) {
+	        	window.setScene(gameOverScene);
 	          lblStatus.setText("Draw! The game is over");
 	          whoseTurn = ' '; // Game is over
 	          
