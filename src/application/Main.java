@@ -553,25 +553,16 @@ public class Main extends Application {
 	          this.heightProperty().subtract(10));
 	        line2.endXProperty().bind(this.widthProperty().subtract(10));
 	        
+	        
+	        ImageView dog = new ImageView(new Image("dog.png"));
 	        // Add the lines to the pane
-	        this.getChildren().addAll(line1, line2); 
+	        this.getChildren().addAll(dog); 
 	      }
 	      else if (token == 'O') {
-	        Ellipse ellipse = new Ellipse(this.getWidth() / 2, 
-	          this.getHeight() / 2, this.getWidth() / 2 - 10, 
-	          this.getHeight() / 2 - 10);
-	        ellipse.centerXProperty().bind(
-	          this.widthProperty().divide(2));
-	        ellipse.centerYProperty().bind(
-	            this.heightProperty().divide(2));
-	        ellipse.radiusXProperty().bind(
-	            this.widthProperty().divide(2).subtract(10));        
-	        ellipse.radiusYProperty().bind(
-	            this.heightProperty().divide(2).subtract(10));   
-	        ellipse.setStroke(Color.BLACK);
-	        ellipse.setFill(Color.TRANSPARENT);
-	        
-	        getChildren().add(ellipse); // Add the ellipse to the pane
+	    
+	        ImageView cat = new ImageView(new Image("cat.png"));
+	        this.getChildren().addAll(cat);
+	         
 	      }
 	    }
 	    /* Handle a mouse click event */
