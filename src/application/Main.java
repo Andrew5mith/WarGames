@@ -30,7 +30,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Ellipse;
 
@@ -42,7 +41,6 @@ public class Main extends Application {
 	private Stage window;
 	private BorderPane gameBorderPane, titlePane, settingsPane, gameOverPane;
 	private Scene titleScene, settingsScene, gameScene, gameOverScene;
-	private HBox avatarPane = new HBox();
 	private ComboBox<String> backgroundDropDown = new ComboBox<>();
 	private ComboBox<String> avatarDropDown1 = new ComboBox<>();
 	private ComboBox<String> avatarDropDown2 = new ComboBox<>();
@@ -85,7 +83,6 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		try {
 		
-			
 			window = primaryStage;
 
 			zeroPlayers.setToggleGroup(numOfPlayers);
@@ -220,6 +217,9 @@ public class Main extends Application {
 		onePlayers.setOnAction(e -> {
 			totalHumans = 1;
 			
+			if(!saveBtn.isPressed()) {
+				avatarDropDown1.setValue("Imperial Knights");
+			}
 			stackPane1.getChildren().add(new ImageView(new Image("image/imperialknights.png")));
 			
 			settingsPane.add(new Label("Player 1's Name:"), 0, 1);
@@ -253,7 +253,11 @@ public class Main extends Application {
 		
 		twoPlayers.setOnAction(e -> {
 			totalHumans = 2;
-		
+			
+			if(!saveBtn.isPressed()) {
+				avatarDropDown1.setValue("Imperial Knights");
+				avatarDropDown2.setValue("Dark Eloar");
+			}
 			stackPane1.getChildren().add(new ImageView(new Image("image/imperialknights.png")));
 			stackPane2.getChildren().add(new ImageView(new Image("image/darkeloar.png")));
 			
@@ -315,7 +319,9 @@ public class Main extends Application {
 		return hBox;
 	}
 	
+	
 	private HBox getAvatars() {
+		HBox avatarPane = new HBox();
 		
 		avatarPane.setAlignment(Pos.TOP_CENTER);
 		avatarPane.setSpacing(5);
@@ -344,8 +350,6 @@ public class Main extends Application {
 			
 			String avatar1 = avatarDropDown1.getValue();
 			String avatar2 = avatarDropDown2.getValue();
-			
-			
 			
 			if(onePlayers.isSelected()) {
 				for(int i = 0; i < 6; i++) {
@@ -424,7 +428,6 @@ public class Main extends Application {
 				
 			}
 
-			
 			saveBtn.setText("Saved!");
 			
 			Timeline resetSaveBtnText = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
@@ -433,6 +436,7 @@ public class Main extends Application {
 			resetSaveBtnText.setDelay(Duration.seconds(2));
 			resetSaveBtnText.setCycleCount(1);
 			resetSaveBtnText.play();
+		
 		});
 		
 		hBox.getChildren().addAll(backBtn, saveBtn);
@@ -543,35 +547,15 @@ public class Main extends Application {
 	      token = c;
 	      
 	      if (token == 'X') {
-	        Line line1 = new Line(10, 10, 
-	          this.getWidth() - 10, this.getHeight() - 10);
-	        line1.endXProperty().bind(this.widthProperty().subtract(10));
-	        line1.endYProperty().bind(this.heightProperty().subtract(10));
-	        Line line2 = new Line(10, this.getHeight() - 10, 
-	          this.getWidth() - 10, 10);
-	        line2.startYProperty().bind(
-	          this.heightProperty().subtract(10));
-	        line2.endXProperty().bind(this.widthProperty().subtract(10));
+	        ImageView dogImage = new ImageView(new Image("dog.png"));
 	        
 	        // Add the lines to the pane
-	        this.getChildren().addAll(line1, line2); 
+	        this.getChildren().addAll(dogImage); 
 	      }
 	      else if (token == 'O') {
-	        Ellipse ellipse = new Ellipse(this.getWidth() / 2, 
-	          this.getHeight() / 2, this.getWidth() / 2 - 10, 
-	          this.getHeight() / 2 - 10);
-	        ellipse.centerXProperty().bind(
-	          this.widthProperty().divide(2));
-	        ellipse.centerYProperty().bind(
-	            this.heightProperty().divide(2));
-	        ellipse.radiusXProperty().bind(
-	            this.widthProperty().divide(2).subtract(10));        
-	        ellipse.radiusYProperty().bind(
-	            this.heightProperty().divide(2).subtract(10));   
-	        ellipse.setStroke(Color.BLACK);
-	        ellipse.setFill(Color.TRANSPARENT);
+	       ImageView catImage = new ImageView(new Image("cat.png"));
 	        
-	        getChildren().add(ellipse); // Add the ellipse to the pane
+	        getChildren().add(catImage); // Add the ellipse to the pane
 	      }
 	    }
 	    /* Handle a mouse click event */
