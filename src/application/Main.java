@@ -4,6 +4,7 @@ import java.util.Random;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -30,8 +31,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Ellipse;
 
 
 public class Main extends Application {
@@ -139,7 +138,15 @@ public class Main extends Application {
 		vBox.setAlignment(Pos.CENTER);
 		Button playAgainBtn = new Button("Play Again");
 		playAgainBtn.setOnAction((ActionEvent event) -> {
-			
+			window.close();
+			Platform.runLater( () -> {
+				try {
+					new Main().start( new Stage() );
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} );
 	
 		});
 		vBox.getChildren().addAll(getLblStatus(), playAgainBtn);
@@ -550,7 +557,8 @@ public class Main extends Application {
 	        ImageView dogImage = new ImageView(new Image("dog.png"));
 	        
 	        // Add the lines to the pane
-	        this.getChildren().addAll(dogImage); 
+	        this.getChildren().addAll(dogImage);
+	        
 	      }
 	      else if (token == 'O') {
 	       ImageView catImage = new ImageView(new Image("cat.png"));
