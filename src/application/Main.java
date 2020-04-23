@@ -42,7 +42,6 @@ public class Main extends Application {
 	private Stage window;
 	private BorderPane gameBorderPane, titlePane, settingsPane, gameOverPane;
 	private Scene titleScene, settingsScene, gameScene, gameOverScene;
-	private HBox avatarPane = new HBox();
 	private ComboBox<String> backgroundDropDown = new ComboBox<>();
 	private ComboBox<String> avatarDropDown1 = new ComboBox<>();
 	private ComboBox<String> avatarDropDown2 = new ComboBox<>();
@@ -85,7 +84,6 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		try {
 		
-			
 			window = primaryStage;
 
 			zeroPlayers.setToggleGroup(numOfPlayers);
@@ -220,6 +218,9 @@ public class Main extends Application {
 		onePlayers.setOnAction(e -> {
 			totalHumans = 1;
 			
+			if(!saveBtn.isPressed()) {
+				avatarDropDown1.setValue("Imperial Knights");
+			}
 			stackPane1.getChildren().add(new ImageView(new Image("image/imperialknights.png")));
 			
 			settingsPane.add(new Label("Player 1's Name:"), 0, 1);
@@ -253,7 +254,11 @@ public class Main extends Application {
 		
 		twoPlayers.setOnAction(e -> {
 			totalHumans = 2;
-		
+			
+			if(!saveBtn.isPressed()) {
+				avatarDropDown1.setValue("Imperial Knights");
+				avatarDropDown2.setValue("Dark Eloar");
+			}
 			stackPane1.getChildren().add(new ImageView(new Image("image/imperialknights.png")));
 			stackPane2.getChildren().add(new ImageView(new Image("image/darkeloar.png")));
 			
@@ -315,7 +320,9 @@ public class Main extends Application {
 		return hBox;
 	}
 	
+	
 	private HBox getAvatars() {
+		HBox avatarPane = new HBox();
 		
 		avatarPane.setAlignment(Pos.TOP_CENTER);
 		avatarPane.setSpacing(5);
@@ -344,8 +351,6 @@ public class Main extends Application {
 			
 			String avatar1 = avatarDropDown1.getValue();
 			String avatar2 = avatarDropDown2.getValue();
-			
-			
 			
 			if(onePlayers.isSelected()) {
 				for(int i = 0; i < 6; i++) {
