@@ -63,20 +63,20 @@ public class Main extends Application {
 	private String[] avatars = {"Imperial Knights", "Chaos Space Marine", "Grey Knights",
 								"Orks", "Tempestus Scions", "Dark Eloar"};
 	private ImageView[] avatarImages1 = {new ImageView(
-			new Image("/imperialknights.png")), 
-			new ImageView(new Image("/chaosspacemarine.png")),
-			new ImageView(new Image("/greyknights.png")),
-			new ImageView(new Image("/orks.png")),
-			new ImageView(new Image("/tempestusscions.png")),
-			new ImageView(new Image("/darkeloar.png"))};
+			new Image("image/imperialknights.png")), 
+			new ImageView(new Image("image/chaosspacemarine.png")),
+			new ImageView(new Image("image/greyknights.png")),
+			new ImageView(new Image("image/orks.png")),
+			new ImageView(new Image("image/tempestusscions.png")),
+			new ImageView(new Image("image/darkeloar.png"))};
 	
 	private ImageView[] avatarImages2 = {new ImageView(
-			new Image("/imperialknights.png")), 
-			new ImageView(new Image("/chaosspacemarine.png")),
-			new ImageView(new Image("/greyknights.png")),
-			new ImageView(new Image("/orks.png")),
-			new ImageView(new Image("/tempestusscions.png")),
-			new ImageView(new Image("/darkeloar.png"))};
+			new Image("image/imperialknights.png")), 
+			new ImageView(new Image("image/chaosspacemarine.png")),
+			new ImageView(new Image("image/greyknights.png")),
+			new ImageView(new Image("image/orks.png")),
+			new ImageView(new Image("image/tempestusscions.png")),
+			new ImageView(new Image("image/darkeloar.png"))};
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -326,8 +326,10 @@ public class Main extends Application {
 		return hBox;
 	}
 	
-	//return avatars
-	private HBox getAvatars() {	
+	
+	private HBox getAvatars() {
+		HBox avatarPane = new HBox();
+		
 		avatarPane.setAlignment(Pos.TOP_CENTER);
 		avatarPane.setSpacing(5);
 		avatarPane.getChildren().addAll(stackPane1, stackPane2);
@@ -335,7 +337,7 @@ public class Main extends Application {
 	}
 	
 
-	//return settings 
+	
 	private HBox getSettingsButtons() {
 		HBox hBox = new HBox(15);
 		hBox.setPadding(new Insets(15,15,15,15));
@@ -348,7 +350,7 @@ public class Main extends Application {
 		saveBtn = new Button("Save");
 		saveBtn.setId("round-red");
 		saveBtn.setOnAction(e -> {
-			
+			// TODO Decide whether to send the background as an image or a string
 			//String background;
 			player1 = player1NameField.getText();
 			player2 = player2NameField.getText();
@@ -389,7 +391,7 @@ public class Main extends Application {
 			String purpleBg = "-fx-background-color: purple;";
 			String orangeBg = "-fx-background-color: orange;";
 			
-			//change the background when saved
+			
 			if(background == "Red") {
 				titlePane.setStyle(redBg);
 				gameBorderPane.setStyle(redBg);
@@ -432,10 +434,9 @@ public class Main extends Application {
 				gameOverPane.setStyle(orangeBg);
 				
 			}
-			
-			
-			//create an animation when the saved button is clicked
+
 			saveBtn.setText("Saved!");
+			
 			Timeline resetSaveBtnText = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
 				saveBtn.setText("Save");
 			}));
@@ -449,7 +450,6 @@ public class Main extends Application {
 		return hBox;
 	}
 	
-	//return title image
 	private HBox getImage() {
 		HBox hBox = new HBox(25);
 		ImageView imageView = new ImageView(new Image("WarGamesTitle.png"));
@@ -477,7 +477,7 @@ public class Main extends Application {
 		return null;
 	}
 	
-	  // Determine if the cell are all occupied 
+	  /** Determine if the cell are all occupied */
 	  public boolean isFull() {
 	    for (int i = 0; i < 3; i++)
 	      for (int j = 0; j < 3; j++)
@@ -487,7 +487,7 @@ public class Main extends Application {
 	    return true;
 	  }
 	  
-	  // Determine if the player with the specified token wins 
+	  /** Determine if the player with the specified token wins */
 	  public boolean isWon(char token) {
 	    for (int i = 0; i < 3; i++)
 	      if (cell[i][0].getToken() == token
@@ -517,7 +517,7 @@ public class Main extends Application {
 	      return false;
 	    }
 	  
-	    //find empty cell - call this method only when some cells are left.
+	    // call this method only when some cells are left.
 	    public Cell findEmptyCell() {
 	        int index;
 	        Random r = new Random();
@@ -544,28 +544,29 @@ public class Main extends Application {
 	      this.setOnMouseClicked(e -> handleMouseClick());
 	    }
 
-	    // Return token 
+	    /** Return token */
 	    public char getToken() {
 	      return token;
 	    }
 	    
-	    //Set new token
+	    /** Set a new token */
 	    public void setToken(char c) {
 	      token = c;
 	      
 	      if (token == 'X') {
-	        //use dog image for X
-	        ImageView dog = new ImageView(new Image("dog.png"));
-	        this.getChildren().addAll(dog); 
+	        ImageView dogImage = new ImageView(new Image("dog.png"));
+	        
+	        // Add the lines to the pane
+	        this.getChildren().addAll(dogImage);
+	        
 	      }
-	      //use cat image for O
 	      else if (token == 'O') {
-	        ImageView cat = new ImageView(new Image("cat.png"));
-	        this.getChildren().addAll(cat);
-	         
+	       ImageView catImage = new ImageView(new Image("cat.png"));
+	        
+	        getChildren().add(catImage); // Add the ellipse to the pane
 	      }
 	    }
-	    // Handle a mouse click event 
+	    /* Handle a mouse click event */
 	    private void handleMouseClick() {
 	      // If cell is empty and game is not over
 	    	
@@ -575,7 +576,6 @@ public class Main extends Application {
 	        // Check game status
 	        if (isWon(whoseTurn)) {
 	        	
-	        	//display who won
 	        	if(totalHumans == 1) {
 	        		if(whoseTurn == 'X') {
 	        			lblStatus.setText(player1 + " won!");
@@ -602,21 +602,18 @@ public class Main extends Application {
 	        	whoseTurn = ' '; // Game is over
         		window.setScene(gameOverScene);
 	        }
-	        //if gameboard is full and no one one display draw text
 	        else if (isFull()) {
 	          lblStatus.setText("Draw! The game is over");
 	          whoseTurn = ' '; // Game is over
 	          
 	        }
 	        else {
-	        	//PvP
 	        	if(totalHumans == 2) {
 	        		// Change the turn
 	        		whoseTurn = (whoseTurn == 'X') ? 'O' : 'X';
 	        		// Display whose turn
 	        		lblStatus.setText(whoseTurn + "'s turn");
 	        	}
-	        	//Player vs. CPU
 	        	if(totalHumans == 1) {
 	        		whoseTurn = (whoseTurn == 'X') ? 'O' : 'X';
 
@@ -626,7 +623,6 @@ public class Main extends Application {
                         compCell.handleMouseClick();
                    }
 	        	}
-	        	//CPU vs CPU
 	        	if(totalHumans == 0) {
                     // Change the turn
                     whoseTurn = (whoseTurn == 'X') ? 'O' : 'X';
