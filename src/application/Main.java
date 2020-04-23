@@ -28,6 +28,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -41,7 +42,12 @@ public class Main extends Application {
 	private Stage window;
 	private BorderPane gameBorderPane, titlePane, settingsPane, gameOverPane;
 	private Scene titleScene, settingsScene, gameScene, gameOverScene;
+	private HBox avatarPane = new HBox();
 	private ComboBox<String> backgroundDropDown = new ComboBox<>();
+	private ComboBox<String> avatarDropDown1 = new ComboBox<>();
+	private ComboBox<String> avatarDropDown2 = new ComboBox<>();
+	private StackPane stackPane1 = new StackPane();
+	private StackPane stackPane2 = new StackPane();
 	private TextField player1NameField = new TextField("Player 1");
 	private TextField player2NameField = new TextField("Player 2");
 	private ToggleGroup numOfPlayers = new ToggleGroup();
@@ -57,6 +63,23 @@ public class Main extends Application {
 	// Create and initialize a status label
 	 private Label lblStatus;
 	private String[] colors = {"Red", "Blue", "Green", "White", "Purple", "Orange"};
+	private String[] avatars = {"Imperial Knights", "Chaos Space Marine", "Grey Knights",
+								"Orks", "Tempestus Scions", "Dark Eloar"};
+	private ImageView[] avatarImages1 = {new ImageView(
+			new Image("image/imperialknights.png")), 
+			new ImageView(new Image("image/chaosspacemarine.png")),
+			new ImageView(new Image("image/greyknights.png")),
+			new ImageView(new Image("image/orks.png")),
+			new ImageView(new Image("image/tempestusscions.png")),
+			new ImageView(new Image("image/darkeloar.png"))};
+	
+	private ImageView[] avatarImages2 = {new ImageView(
+			new Image("image/imperialknights.png")), 
+			new ImageView(new Image("image/chaosspacemarine.png")),
+			new ImageView(new Image("image/greyknights.png")),
+			new ImageView(new Image("image/orks.png")),
+			new ImageView(new Image("image/tempestusscions.png")),
+			new ImageView(new Image("image/darkeloar.png"))};
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -76,14 +99,15 @@ public class Main extends Application {
 
 			titlePane.setCenter(getImage());
 			titlePane.setBottom(getTitleButtons());
-			titleScene = new Scene(titlePane,400,400);
+			titleScene = new Scene(titlePane, 700, 700);
 			titleScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
 			//Settings
 			settingsPane = new BorderPane();
+			settingsPane.setTop(getAvatars());
 			settingsPane.setCenter(getSettings());
 			settingsPane.setBottom(getSettingsButtons());
-			settingsScene = new Scene(settingsPane, 400, 400);
+			settingsScene = new Scene(settingsPane, 700, 700);
 			settingsScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
 			//Game
@@ -91,13 +115,13 @@ public class Main extends Application {
 			gameBorderPane.setTop(getScoreBoard());
 			gameBorderPane.setCenter(getGameGrid());
 			gameBorderPane.setBottom(getLblStatus());	
-			gameScene = new Scene(gameBorderPane, 400, 400);
+			gameScene = new Scene(gameBorderPane, 700, 700);
 			gameScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
 			//GameOver
 			gameOverPane = new BorderPane();
 			gameOverPane.setCenter(getGameOverScreen());
-			gameOverScene = new Scene(gameOverPane, 400, 400);
+			gameOverScene = new Scene(gameOverPane, 700, 700);
 			gameOverScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
 			window.getIcons().add(new Image("WarGamesIcon.png"));
@@ -124,10 +148,6 @@ public class Main extends Application {
 		vBox.getChildren().addAll(getLblStatus(), playAgainBtn);
 		return vBox;
 	}
-	
-
-
-
 
 	private Node getLblStatus() {
 		HBox hBox = new HBox(15);
@@ -164,6 +184,16 @@ public class Main extends Application {
 		settingsPane.add(twoPlayers, 3, 0);
 		twoPlayers.setId("num-of-players");
 		
+		avatarDropDown1 = new ComboBox<>(); 
+		avatarDropDown1.setValue("Imperial Knights");
+		ObservableList<String> avatarList1 = FXCollections.observableArrayList(avatars);
+		avatarDropDown1.getItems().addAll(avatarList1);
+		
+		avatarDropDown2 = new ComboBox<>(); 
+		avatarDropDown2.setValue("Dark Eloar");
+		ObservableList<String> avatarList2 = FXCollections.observableArrayList(avatars);
+		avatarDropDown2.getItems().addAll(avatarList2);
+		
 		backgroundDropDown = new ComboBox<>();		
 		backgroundDropDown.setValue("Red");
 		ObservableList<String> items = FXCollections.observableArrayList(colors);
@@ -190,13 +220,18 @@ public class Main extends Application {
 		onePlayers.setOnAction(e -> {
 			totalHumans = 1;
 			
+			stackPane1.getChildren().add(new ImageView(new Image("image/imperialknights.png")));
+			
 			settingsPane.add(new Label("Player 1's Name:"), 0, 1);
 			settingsPane.add(player1NameField, 1, 1, 4, 1);	
-			settingsPane.add(new Label("Background:"), 0, 2);
-			settingsPane.add(backgroundDropDown, 1, 2, 4, 1);		
+			settingsPane.add(new Label("Player 1's Avatar:"), 0, 2);
+			settingsPane.add(avatarDropDown1, 1, 2, 4, 1);
+			settingsPane.add(new Label("Background:"), 0, 3);
+			settingsPane.add(backgroundDropDown, 1, 3, 4, 1);		
 			getNodeByColumnRowIndex(0, 1, settingsPane, "").setId("label");
 			getNodeByColumnRowIndex(0, 2, settingsPane, "").setId("label");
-				
+			getNodeByColumnRowIndex(0, 3, settingsPane, "").setId("label");
+
 			numOfPlayers.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 				@Override
 				public void changed(ObservableValue<? extends Toggle> arg0, Toggle arg1, Toggle arg2) {
@@ -206,6 +241,11 @@ public class Main extends Application {
 						
 						getNodeByColumnRowIndex(0, 2, settingsPane, "remove");
 						getNodeByColumnRowIndex(1, 2, settingsPane, "remove");
+						
+						getNodeByColumnRowIndex(0, 3, settingsPane, "remove");
+						getNodeByColumnRowIndex(1, 3, settingsPane, "remove");
+						
+						stackPane1.getChildren().clear();
 					}
 				}
 			});
@@ -213,17 +253,26 @@ public class Main extends Application {
 		
 		twoPlayers.setOnAction(e -> {
 			totalHumans = 2;
+		
+			stackPane1.getChildren().add(new ImageView(new Image("image/imperialknights.png")));
+			stackPane2.getChildren().add(new ImageView(new Image("image/darkeloar.png")));
 			
 			settingsPane.add(new Label("Player 1's Name:"), 0, 1);
 			settingsPane.add(player1NameField, 1, 1, 4, 1);	
-			settingsPane.add(new Label("Player 2's Name:"), 0, 2);
-			settingsPane.add(player2NameField, 1, 2, 4, 1);	
-			settingsPane.add(new Label("Background:"), 0, 3);
-			settingsPane.add(backgroundDropDown, 1, 3, 4, 1);	
+			settingsPane.add(new Label("Player 1's Avatar:"), 0, 2);
+			settingsPane.add(avatarDropDown1, 1, 2, 4, 1);
+			settingsPane.add(new Label("Player 2's Name:"), 0, 3);
+			settingsPane.add(player2NameField, 1, 3, 4, 1);	
+			settingsPane.add(new Label("Player 2's Avatar:"), 0, 4);
+			settingsPane.add(avatarDropDown2, 1, 4, 4, 1);	
+			settingsPane.add(new Label("Background:"), 0, 5);
+			settingsPane.add(backgroundDropDown, 1, 5, 4, 1);	
 			getNodeByColumnRowIndex(0, 1, settingsPane, "").setId("label");
 			getNodeByColumnRowIndex(0, 2, settingsPane, "").setId("label");
 			getNodeByColumnRowIndex(0, 3, settingsPane, "").setId("label");
-			
+			getNodeByColumnRowIndex(0, 4, settingsPane, "").setId("label");
+			getNodeByColumnRowIndex(0, 5, settingsPane, "").setId("label");
+
 			numOfPlayers.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 				@Override
 				public void changed(ObservableValue<? extends Toggle> arg0, Toggle arg1, Toggle arg2) {
@@ -234,6 +283,13 @@ public class Main extends Application {
 						getNodeByColumnRowIndex(1, 2, settingsPane, "remove");						
 						getNodeByColumnRowIndex(0, 3, settingsPane, "remove");
 						getNodeByColumnRowIndex(1, 3, settingsPane, "remove");
+						getNodeByColumnRowIndex(0, 4, settingsPane, "remove");
+						getNodeByColumnRowIndex(1, 4, settingsPane, "remove");
+						getNodeByColumnRowIndex(0, 5, settingsPane, "remove");
+						getNodeByColumnRowIndex(1, 5, settingsPane, "remove");
+						
+						stackPane1.getChildren().clear();
+						stackPane2.getChildren().clear();
 					}
 				}
 			});
@@ -259,6 +315,14 @@ public class Main extends Application {
 		return hBox;
 	}
 	
+	private HBox getAvatars() {
+		
+		avatarPane.setAlignment(Pos.TOP_CENTER);
+		avatarPane.setSpacing(5);
+		avatarPane.getChildren().addAll(stackPane1, stackPane2);
+		return avatarPane;
+	}
+	
 
 	
 	private HBox getSettingsButtons() {
@@ -277,6 +341,36 @@ public class Main extends Application {
 			//String background;
 			player1 = player1NameField.getText();
 			player2 = player2NameField.getText();
+			
+			String avatar1 = avatarDropDown1.getValue();
+			String avatar2 = avatarDropDown2.getValue();
+			
+			
+			
+			if(onePlayers.isSelected()) {
+				for(int i = 0; i < 6; i++) {
+					if(avatar1 == avatars[i]) {
+						stackPane1.getChildren().clear();
+						stackPane1.getChildren().add(avatarImages1[i]);
+					}
+				}
+			}
+
+			if(twoPlayers.isSelected()) {
+				for(int i = 0; i < 6; i++) {
+					if(avatar1 == avatars[i]) {
+						stackPane1.getChildren().clear();
+						stackPane1.getChildren().add(avatarImages1[i]);
+					}
+				}
+				for(int i = 0; i < 6; i++) {
+					if(avatar2 == avatars[i]) {
+						stackPane2.getChildren().clear();
+						stackPane2.getChildren().add(avatarImages2[i]);
+					}
+				}
+			}
+			
 			String background = backgroundDropDown.getValue();
 
 			String redBg = "-fx-background-color: firebrick;";
