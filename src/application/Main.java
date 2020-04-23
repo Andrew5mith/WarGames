@@ -66,20 +66,20 @@ public class Main extends Application {
 	private String[] avatars = {"Imperial Knights", "Chaos Space Marine", "Grey Knights",
 								"Orks", "Tempestus Scions", "Dark Eloar"};
 	private ImageView[] avatarImages1 = {new ImageView(
-			new Image("image/imperialknights.png")), 
-			new ImageView(new Image("image/chaosspacemarine.png")),
-			new ImageView(new Image("image/greyknights.png")),
-			new ImageView(new Image("image/orks.png")),
-			new ImageView(new Image("image/tempestusscions.png")),
-			new ImageView(new Image("image/darkeloar.png"))};
+			new Image("/imperialknights.png")), 
+			new ImageView(new Image("/chaosspacemarine.png")),
+			new ImageView(new Image("/greyknights.png")),
+			new ImageView(new Image("/orks.png")),
+			new ImageView(new Image("/tempestusscions.png")),
+			new ImageView(new Image("/darkeloar.png"))};
 	
 	private ImageView[] avatarImages2 = {new ImageView(
-			new Image("image/imperialknights.png")), 
-			new ImageView(new Image("image/chaosspacemarine.png")),
-			new ImageView(new Image("image/greyknights.png")),
-			new ImageView(new Image("image/orks.png")),
-			new ImageView(new Image("image/tempestusscions.png")),
-			new ImageView(new Image("image/darkeloar.png"))};
+			new Image("/imperialknights.png")), 
+			new ImageView(new Image("/chaosspacemarine.png")),
+			new ImageView(new Image("/greyknights.png")),
+			new ImageView(new Image("/orks.png")),
+			new ImageView(new Image("/tempestusscions.png")),
+			new ImageView(new Image("/darkeloar.png"))};
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -220,7 +220,7 @@ public class Main extends Application {
 		onePlayers.setOnAction(e -> {
 			totalHumans = 1;
 			
-			stackPane1.getChildren().add(new ImageView(new Image("image/imperialknights.png")));
+			stackPane1.getChildren().add(new ImageView(new Image("/imperialknights.png")));
 			
 			settingsPane.add(new Label("Player 1's Name:"), 0, 1);
 			settingsPane.add(player1NameField, 1, 1, 4, 1);	
@@ -254,8 +254,8 @@ public class Main extends Application {
 		twoPlayers.setOnAction(e -> {
 			totalHumans = 2;
 		
-			stackPane1.getChildren().add(new ImageView(new Image("image/imperialknights.png")));
-			stackPane2.getChildren().add(new ImageView(new Image("image/darkeloar.png")));
+			stackPane1.getChildren().add(new ImageView(new Image("/imperialknights.png")));
+			stackPane2.getChildren().add(new ImageView(new Image("/darkeloar.png")));
 			
 			settingsPane.add(new Label("Player 1's Name:"), 0, 1);
 			settingsPane.add(player1NameField, 1, 1, 4, 1);	
